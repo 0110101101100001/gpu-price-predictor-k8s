@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scraper-pichau
+spec:
+  schedule: "0 0 * * *"  # Todos os dias à meia-noite UTC
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 3    # <--- Movido para dentro do jobTemplate.spec correto
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: scraper
+            image: rastreador-api:latest
+            imagePullPolicy: IfNotPresent
+            command: ["python", "scraper_pichau.py"]
+            env:
+            - name: SUPABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rastreador-secrets
+                  key: SUPABASE_URL
+            - name: SUPABASE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rastreador-secrets
+                  key: SUPABASE_KEY
