@@ -48,7 +48,6 @@ export const RankingPanel = ({ componente, componentes = [] }) => {
                     />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-100 truncate">{item.nome}</p>
                     <p className="text-xs text-slate-500 truncate">{item.loja}</p>
                   </div>
                 </div>

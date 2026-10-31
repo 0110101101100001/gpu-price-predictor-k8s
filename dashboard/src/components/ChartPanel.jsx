@@ -41,29 +41,8 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
         <div>
           <h2 className="text-lg font-bold text-slate-100">Histórico de Preços</h2>
           <p className="text-sm text-slate-400">
-            {componente} — Pichau
+            Evolução temporal e flutuação de mercado
           </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {componentesDisponiveis.map((comp) => {
-            const ativo = componente === comp;
-            return (
-              <span
-                key={comp}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 ${
-                  ativo
-                    ? "bg-blue-600/20 border-blue-500/30 text-blue-100 font-semibold"
-                    : "bg-slate-800/30 border-slate-700 text-slate-400"
-                }`}
-              >
-                <span
-                  className="w-2 h-2 rounded-full inline-block"
-                  style={{ backgroundColor: COLORS[comp] }}
-                />
-                {comp}
-              </span>
-            );
-          })}
         </div>
       </div>
 

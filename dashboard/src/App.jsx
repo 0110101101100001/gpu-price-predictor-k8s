@@ -173,10 +173,10 @@ export default function App() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-slate-100">Dashboard de Preços</h1>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-2">
               <span className="flex items-center gap-1 rounded-xl bg-slate-800/60 border border-slate-700/50 px-2.5 py-0.5 text-xs font-medium text-slate-300">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                {componenteSelecionado} • Pichau
+                Pichau
               </span>
               <span className="text-sm text-slate-400 font-medium">Monitoramento em tempo real</span>
             </div>
@@ -204,7 +204,7 @@ export default function App() {
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   componenteSelecionado === comp
                     ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
-                    : "bg-slate-800/50 text-slate-400 border border-slate-700 hover:bg-slate-700 hover:text-slate-100"
+                    : "bg-slate-900/40 text-slate-500 border border-slate-700/30 hover:bg-slate-800/30 hover:text-slate-300"
                 }`}
               >
                 {comp}
