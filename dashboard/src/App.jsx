@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import {
-  BarChart3,
   TrendingUp,
   ShieldCheck,
   Bot,
@@ -111,7 +110,6 @@ export default function App() {
 
   const confiancaModelo = 87;
 
-  // --- GERAR RANKING COM AS OFERTAS ATIVAS (ÚLTIMO DIA DE SCRAPING) ---
   let ranking = [];
   
   if (dadosFiltrados.length > 0) {
@@ -142,10 +140,10 @@ export default function App() {
 
   if (carregando) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
-          <p className="text-gray-600 font-medium">A carregar dados do Supabase...</p>
+          <RefreshCw className="w-8 h-8 text-blue-400 animate-spin" />
+          <p className="text-slate-400 font-medium">Carregando dados do Supabase…</p>
         </div>
       </div>
     );
@@ -153,11 +151,11 @@ export default function App() {
 
   if (erro) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6 text-center">
-        <div className="max-w-md bg-white rounded-2xl shadow-card border border-red-100 p-6">
-          <ShieldCheck className="w-8 h-8 text-red-600 mb-4" />
-          <h2 className="text-lg font-bold text-gray-900 mb-2">Erro ao carregar dados</h2>
-          <p className="text-sm text-gray-600 mb-4">{erro}</p>
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 text-center">
+        <div className="max-w-md bg-slate-900/60 backdrop-blur-md border border-slate-800/50 shadow-2xl rounded-2xl p-6">
+          <ShieldCheck className="w-8 h-8 text-rose-400 mb-4" />
+          <h2 className="text-lg font-bold text-slate-100 mb-2">Erro ao carregar dados</h2>
+          <p className="text-sm text-slate-500 mb-4">{erro}</p>
           <button
             onClick={() => window.location.reload()}
             className="btn-primary"
@@ -170,14 +168,18 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-950">
       <main className="pt-8 pb-12 px-4 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Dashboard de Preços</h1>
-            <p className="text-sm text-gray-500">
-              {componenteSelecionado} — Pichau (dados reais do Supabase)
-            </p>
+            <h1 className="text-2xl font-bold text-slate-100">Dashboard de Preços</h1>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="flex items-center gap-1 rounded-xl bg-slate-800/60 border border-slate-700/50 px-2.5 py-0.5 text-xs font-medium text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                {componenteSelecionado} • Pichau
+              </span>
+              <span className="text-sm text-slate-400 font-medium">Monitoramento em tempo real</span>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -192,17 +194,17 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <span className="text-sm font-medium text-gray-700">Placa de vídeo:</span>
-          <div className="flex gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-6 mb-8 bg-slate-900/50 backdrop-blur-md border border-slate-800/40 shadow-lg rounded-2xl p-8">
+          <span className="text-sm font-medium text-slate-400">Placa de vídeo:</span>
+          <div className="flex gap-2 items-center">
             {COMPONENTES_MVP.map((comp) => (
               <button
                 key={comp}
                 onClick={() => setComponenteSelecionado(comp)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   componenteSelecionado === comp
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                    : "bg-slate-800/50 text-slate-400 border border-slate-700 hover:bg-slate-700 hover:text-slate-100"
                 }`}
               >
                 {comp}
@@ -222,7 +224,6 @@ export default function App() {
                 : "—"
             }
             tendencia={tendenciaSelecionada}
-            icon={BarChart3}
             variant="blue"
           />
           <MetricCard
@@ -235,7 +236,6 @@ export default function App() {
                 : "—"
             }
             tendencia={variacaoSemanalComp >= 0 ? "alta" : "baixa"}
-            icon={TrendingUp}
             variant="default"
           />
           <MetricCard
@@ -248,7 +248,6 @@ export default function App() {
                 : "—"
             }
             tendencia={taxaVariacaoComp >= 0 ? "alta" : "baixa"}
-            icon={ShieldCheck}
             variant="warning"
           />
           <MetricCard
@@ -257,7 +256,6 @@ export default function App() {
             subtitulo="Eficácia da recomendação"
             valorExibido={`${confiancaModelo}%`}
             tendencia="alta"
-            icon={Bot}
             variant="success"
           />
         </div>

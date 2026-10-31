@@ -17,8 +17,6 @@ const COLORS = {
 };
 
 export const ChartPanel = ({ componente, dados = [], className }) => {
-  // Transforma o array bruto do Supabase [{ data_registo, componente, preco }, ...] 
-  // num formato amigável para o Recharts agrupado por data.
   const mapaDatas = {};
 
   dados.forEach((d) => {
@@ -35,15 +33,14 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
 
   const temDados = dadosGrafico.length > 0;
 
-  // Lista de componentes disponíveis no MVP
   const componentesDisponiveis = ["RX 7600", "RTX 5050", "RTX 5060"];
 
   return (
-    <div className={cn("chart-container bg-white p-6 rounded-2xl shadow-sm border border-gray-100", className)}>
+    <div className={cn("chart-container", className)}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">Histórico de Preços</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="text-lg font-bold text-slate-100">Histórico de Preços</h2>
+          <p className="text-sm text-slate-400">
             {componente} — Pichau
           </p>
         </div>
@@ -55,8 +52,8 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
                 key={comp}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 ${
                   ativo
-                    ? "bg-gray-100 border-gray-300 text-gray-900 font-semibold"
-                    : "bg-white border-gray-100 text-gray-400 opacity-60"
+                    ? "bg-blue-600/20 border-blue-500/30 text-blue-100 font-semibold"
+                    : "bg-slate-800/30 border-slate-700 text-slate-400"
                 }`}
               >
                 <span
@@ -71,29 +68,54 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
       </div>
 
       {!temDados ? (
-        <div className="h-80 w-full bg-gray-50 rounded-xl border border-gray-200 flex flex-col items-center justify-center text-center p-6">
-          <p className="text-gray-400 text-sm mb-2">Nenhum histórico disponível</p>
-          <p className="text-xs text-gray-500">Execute o scraper para popular o Supabase</p>
+        <div className="h-80 w-full bg-slate-900/30 rounded-xl border border-slate-800/30 flex flex-col items-center justify-center text-center p-6">
+          <p className="text-slate-400 text-sm mb-2">Nenhum histórico disponível</p>
+          <p className="text-xs text-slate-600">Execute o scraper para popular o Supabase</p>
         </div>
       ) : (
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={dadosGrafico}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+              <defs>
+                <linearGradient id="colorRx7600" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.6} />
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorRtx5050" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.6} />
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorRtx5060" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.6} />
+                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+
+              <CartesianGrid strokeDasharray="2 2" stroke="#e2e8f0" vertical={false} />
+
               <XAxis
                 dataKey="data"
-                tick={{ fontSize: 11, fill: "#64748b" }}
+                tick={{ fontSize: 11, fill: "#94a3b8" }}
                 axisLine={false}
                 tickMargin={10}
+                tickFormatter={(value) => {
+                  const d = new Date(value);
+                  return d.toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "short",
+                  });
+                }}
               />
+
               <YAxis
                 tickFormatter={(value) => `R$ ${value}`}
-                tick={{ fontSize: 11, fill: "#64748b" }}
+                tick={{ fontSize: 11, fill: "#94a3b8" }}
                 axisLine={false}
                 tickMargin={10}
                 width={60}
-                domain={['auto', 'auto']}
+                domain={["auto", "auto"]}
               />
+
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
@@ -104,12 +126,12 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
                   fontSize: "13px",
                 }}
                 itemStyle={{ color: "#1e293b", fontWeight: 600 }}
-                formatter={(value) => [`R$ ${value}`, "Preço"]}
+                formatter={(value) => `R$ ${value}`}
                 labelFormatter={(label) => `Data: ${label}`}
               />
+
               <Legend verticalAlign="top" align="right" height={36} />
 
-              {/* Renderiza a linha apenas da placa selecionada com destaque, ou todas esmaecidas */}
               {componentesDisponiveis.map((comp) => {
                 const isSelected = componente === comp;
                 return (
@@ -124,6 +146,8 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
                     activeDot={{ r: 6 }}
                     name={comp}
                     connectNulls
+                    fill={isSelected ? `url(#color${comp.replace(/\s/g, "")})` : "none"}
+                    fillOpacity={isSelected ? 0.2 : 0}
                   />
                 );
               })}
