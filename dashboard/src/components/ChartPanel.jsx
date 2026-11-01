@@ -24,7 +24,12 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
     if (!mapaDatas[dataReg]) {
       mapaDatas[dataReg] = { data: dataReg };
     }
-    mapaDatas[dataReg][d.componente] = d.preco;
+
+    // Para cada data e componente, manter apenas o menor preço (melhor oferta)
+    const precoAtual = mapaDatas[dataReg][d.componente];
+    if (precoAtual === undefined || d.preco < precoAtual) {
+      mapaDatas[dataReg][d.componente] = d.preco;
+    }
   });
 
   const dadosGrafico = Object.values(mapaDatas).sort(
@@ -43,6 +48,26 @@ export const ChartPanel = ({ componente, dados = [], className }) => {
           <p className="text-sm text-slate-400">
             Evolução temporal e flutuação de mercado
           </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {componentesDisponiveis.map((comp) => {
+            const ativo = componente === comp;
+            return (
+              <span
+                key={comp}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 ${
+                  ativo
+                    ? "bg-blue-600/20 border-blue-500/30 text-blue-100 font-semibold"
+                    : "bg-slate-900/20 border-slate-700/30 text-slate-500"
+                }`}
+              >
+                {ativo && (
+                  <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: COLORS[comp] }} />
+                )}
+                {comp}
+              </span>
+            );
+          })}
         </div>
       </div>
 

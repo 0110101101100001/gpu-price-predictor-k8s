@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# gpu-price-predictor-k8s
-=======
 # Rastreador de Preços de GPUs — Pichau
 
 Rastreador de preços de placas de vídeo (RX 7600, RTX 5050, RTX 5060) na loja Pichau. O projeto coleta preços à vista via scraping, armazena no Supabase, treina um modelo de classificação com XGBoost para recomendar compra ou aguardo, e exibe os dados em um dashboard React.
@@ -184,4 +181,3 @@ kubectl apply -f scraper-cronjob.yaml
 ## Licença
 
 MIT.
->>>>>>> 7a85a8e (feat: versão inicial do rastreador de preços de GPUs)
